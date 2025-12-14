@@ -147,15 +147,21 @@ public struct UserDetailView: View {
         self.store = store
     }
 
+    private var emailTextField: some View {
+        TextField("メールアドレス", text: $store.editedEmail)
+            .textContentType(.emailAddress)
+            #if os(iOS)
+            .keyboardType(.emailAddress)
+            #endif
+    }
+
     public var body: some View {
         Form {
             // ユーザー情報セクション
             Section("ユーザー情報") {
                 if store.isEditing {
                     TextField("名前", text: $store.editedName)
-                    TextField("メールアドレス", text: $store.editedEmail)
-                        .textContentType(.emailAddress)
-                        .keyboardType(.emailAddress)
+                    emailTextField
                 } else {
                     LabeledContent("名前", value: store.user.name)
                     LabeledContent("メールアドレス", value: store.user.email)
@@ -190,9 +196,8 @@ public struct UserDetailView: View {
             }
         }
         .navigationTitle(store.user.name)
-        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItem(placement: .primaryAction) {
                 if store.isEditing {
                     HStack {
                         Button("キャンセル") {

@@ -202,7 +202,7 @@ public struct UserListView: View {
             }
             .navigationTitle("ユーザー一覧")
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .primaryAction) {
                     if store.isLoading {
                         ProgressView()
                     } else {
