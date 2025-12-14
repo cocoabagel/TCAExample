@@ -1,6 +1,7 @@
 import AdvancedFeature
 import ComposableArchitecture
 import CounterFeature
+import ProFeature
 import SwiftUI
 
 @main
@@ -29,6 +30,12 @@ struct TCAExampleApp: App {
                 // Navigation, Dependency, 親子連携を含む
                 Tab("ユーザー", systemImage: "person.2") {
                     UserListView(store: TCAExampleApp.userListStore)
+                }
+
+                // タブ3: Pro機能（TCA上級）
+                // @Shared, StackState, Effect キャンセル, Scope, Long-running Effects
+                Tab("Pro", systemImage: "star.fill") {
+                    ProFeatureView()
                 }
             }
         }

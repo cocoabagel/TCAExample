@@ -12,6 +12,8 @@ packages:
     path: CounterFeature
   AdvancedFeature:
     path: AdvancedFeature
+  ProFeature:
+    path: ProFeature
 
 targets:
   # MARK: - TCAExample App
@@ -28,6 +30,8 @@ targets:
         product: CounterFeature
       - package: AdvancedFeature
         product: AdvancedFeature
+      - package: ProFeature
+        product: ProFeature
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.tcaexample.app
@@ -49,6 +53,7 @@ schemes:
       targets:
         - package: CounterFeature/CounterFeatureTests
         - package: AdvancedFeature/AdvancedFeatureTests
+        - package: ProFeature/ProFeatureTests
     profile:
       config: Release
       executable: TCAExample
