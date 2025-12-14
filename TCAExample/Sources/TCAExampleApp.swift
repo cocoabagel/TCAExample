@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import CounterFeature
 import SwiftUI
 
 @main

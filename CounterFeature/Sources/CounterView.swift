@@ -4,11 +4,15 @@ import SwiftUI
 // MARK: - View（ビュー）
 // TCA では Store を通じて State を読み取り、Action を送信します
 
-struct CounterView: View {
+public struct CounterView: View {
     // Store: State と Action を管理するコンテナ
     let store: StoreOf<CounterFeature>
 
-    var body: some View {
+    public init(store: StoreOf<CounterFeature>) {
+        self.store = store
+    }
+
+    public var body: some View {
         VStack(spacing: 24) {
             Text("TCA カウンター")
                 .font(.title)

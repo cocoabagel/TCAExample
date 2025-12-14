@@ -1,6 +1,6 @@
 import ComposableArchitecture
 import Testing
-@testable import TCAExample
+@testable import CounterFeature
 
 // MARK: - TCA テストのメリット
 // 1. TestStore を使うと、Action を送信した後の State の変化を厳密に検証できる

@@ -10,6 +10,33 @@ let project = Project(
         )
     ],
     targets: [
+        // MARK: - CounterFeature Framework
+        .target(
+            name: "CounterFeature",
+            destinations: .iOS,
+            product: .framework,
+            bundleId: "com.tcaexample.counterfeature",
+            deploymentTargets: .iOS("17.0"),
+            infoPlist: .default,
+            sources: ["CounterFeature/Sources/**"],
+            resources: ["CounterFeature/Resources/**"],
+            dependencies: [
+                .package(product: "ComposableArchitecture")
+            ]
+        ),
+        .target(
+            name: "CounterFeatureTests",
+            destinations: .iOS,
+            product: .unitTests,
+            bundleId: "com.tcaexample.counterfeature.tests",
+            deploymentTargets: .iOS("17.0"),
+            infoPlist: .default,
+            sources: ["CounterFeature/Tests/**"],
+            dependencies: [
+                .target(name: "CounterFeature")
+            ]
+        ),
+        // MARK: - TCAExample App
         .target(
             name: "TCAExample",
             destinations: .iOS,
@@ -29,19 +56,7 @@ let project = Project(
             sources: ["TCAExample/Sources/**"],
             resources: ["TCAExample/Resources/**"],
             dependencies: [
-                .package(product: "ComposableArchitecture")
-            ]
-        ),
-        .target(
-            name: "TCAExampleTests",
-            destinations: .iOS,
-            product: .unitTests,
-            bundleId: "com.tcaexample.app.tests",
-            deploymentTargets: .iOS("17.0"),
-            infoPlist: .default,
-            sources: ["TCAExample/Tests/**"],
-            dependencies: [
-                .target(name: "TCAExample")
+                .target(name: "CounterFeature")
             ]
         )
     ]

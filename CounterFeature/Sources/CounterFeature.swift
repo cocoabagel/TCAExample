@@ -7,26 +7,32 @@ import ComposableArchitecture
 // 3. Reducer: Action を受け取って State を更新するロジック
 
 @Reducer
-struct CounterFeature {
+public struct CounterFeature {
     // MARK: - State（状態）
     // アプリが保持するデータを定義します
     // @ObservableState を付けると SwiftUI が自動的に変更を検知します
     @ObservableState
-    struct State: Equatable {
-        var count = 0
+    public struct State: Equatable {
+        public var count = 0
+
+        public init(count: Int = 0) {
+            self.count = count
+        }
     }
 
     // MARK: - Action（アクション）
     // ユーザーが行える操作を列挙型で定義します
-    enum Action {
+    public enum Action {
         case incrementButtonTapped  // +ボタンが押された
         case decrementButtonTapped  // -ボタンが押された
         case resetButtonTapped      // リセットボタンが押された
     }
 
+    public init() {}
+
     // MARK: - Reducer（リデューサー）
     // Action を受け取り、State を更新するロジックを書きます
-    var body: some ReducerOf<Self> {
+    public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .incrementButtonTapped:
