@@ -10,6 +10,8 @@ packages:
   # Local Packages
   CounterFeature:
     path: CounterFeature
+  AdvancedFeature:
+    path: AdvancedFeature
 
 targets:
   # MARK: - TCAExample App
@@ -24,6 +26,8 @@ targets:
     dependencies:
       - package: CounterFeature
         product: CounterFeature
+      - package: AdvancedFeature
+        product: AdvancedFeature
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.tcaexample.app
@@ -44,6 +48,7 @@ schemes:
       config: Debug
       targets:
         - package: CounterFeature/CounterFeatureTests
+        - package: AdvancedFeature/AdvancedFeatureTests
     profile:
       config: Release
       executable: TCAExample
