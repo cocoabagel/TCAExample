@@ -4,7 +4,8 @@ import PackageDescription
 let package = Package(
     name: "CounterFeature",
     platforms: [
-        .iOS(.v26)
+        .iOS(.v26),
+        .macOS(.v15)
     ],
     products: [
         .library(
@@ -16,6 +17,10 @@ let package = Package(
         .package(
             url: "https://github.com/pointfreeco/swift-composable-architecture",
             exact: "1.23.1"
+        ),
+        .package(
+            url: "https://github.com/pointfreeco/swift-snapshot-testing",
+            from: "1.17.0"
         )
     ],
     targets: [
@@ -27,7 +32,10 @@ let package = Package(
         ),
         .testTarget(
             name: "CounterFeatureTests",
-            dependencies: ["CounterFeature"]
+            dependencies: [
+                "CounterFeature",
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+            ]
         )
     ]
 )

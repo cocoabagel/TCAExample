@@ -42,6 +42,8 @@ schemes:
       executable: TCAExample
     test:
       config: Debug
+      targets:
+        - package: CounterFeature/CounterFeatureTests
     profile:
       config: Release
       executable: TCAExample
