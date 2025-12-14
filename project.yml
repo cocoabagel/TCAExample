@@ -1,0 +1,83 @@
+name: TCAExample
+options:
+  bundleIdPrefix: com.tcaexample
+  deploymentTarget:
+    iOS: "26.0"
+  xcodeVersion: "26.0"
+  generateEmptyDirectories: true
+
+packages:
+  ComposableArchitecture:
+    url: https://github.com/pointfreeco/swift-composable-architecture
+    exactVersion: 1.23.1
+
+targets:
+  # MARK: - CounterFeature Framework
+  CounterFeature:
+    type: framework
+    platform: iOS
+    sources:
+      - CounterFeature/Sources
+    resources:
+      - path: CounterFeature/Resources
+        optional: true
+    dependencies:
+      - package: ComposableArchitecture
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.tcaexample.counterfeature
+        GENERATE_INFOPLIST_FILE: YES
+
+  # MARK: - CounterFeature Tests
+  CounterFeatureTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - CounterFeature/Tests
+    dependencies:
+      - target: CounterFeature
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.tcaexample.counterfeature.tests
+        GENERATE_INFOPLIST_FILE: YES
+
+  # MARK: - TCAExample App
+  TCAExample:
+    type: application
+    platform: iOS
+    sources:
+      - TCAExample/Sources
+    resources:
+      - path: TCAExample/Resources
+        optional: true
+    dependencies:
+      - target: CounterFeature
+        embed: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.tcaexample.app
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: TCAExample
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+
+schemes:
+  TCAExample:
+    build:
+      targets:
+        TCAExample: all
+        CounterFeature: all
+    run:
+      config: Debug
+      executable: TCAExample
+    test:
+      config: Debug
+      targets:
+        - CounterFeatureTests
+    profile:
+      config: Release
+      executable: TCAExample
+    analyze:
+      config: Debug
+    archive:
+      config: Release

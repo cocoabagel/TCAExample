@@ -1,2 +1,1 @@
-tap "tuist/tuist"
-brew "tuist"
+brew "xcodegen"
