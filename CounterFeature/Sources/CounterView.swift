@@ -49,14 +49,30 @@ public struct CounterView: View {
                 }
             }
 
+            // タイマーボタン: Effect のデモ
+            Button {
+                store.send(.timerButtonTapped)
+            } label: {
+                HStack {
+                    Image(systemName: store.isTimerRunning ? "stop.fill" : "play.fill")
+                    Text(store.isTimerRunning ? "タイマー停止" : "タイマー開始")
+                }
+                .font(.headline)
+                .foregroundStyle(.white)
+                .padding(.horizontal, 24)
+                .padding(.vertical, 12)
+                .background(store.isTimerRunning ? Color.red : Color.green)
+                .clipShape(Capsule())
+            }
+
             // 学習用の説明
             VStack(alignment: .leading, spacing: 8) {
-                Text("TCA の流れ:")
+                Text("Effect（副作用）の例:")
                     .font(.headline)
-                Text("1. ボタンをタップ → Action を送信")
-                Text("2. Reducer が Action を処理")
-                Text("3. State が更新される")
-                Text("4. View が自動的に再描画")
+                Text("1. タイマー開始 → Effect.run で非同期処理")
+                Text("2. 1秒ごとに timerTick Action を送信")
+                Text("3. タイマー停止 → .cancel で Effect をキャンセル")
+                Text("4. CancelID でどの Effect を止めるか識別")
             }
             .font(.caption)
             .foregroundStyle(.secondary)

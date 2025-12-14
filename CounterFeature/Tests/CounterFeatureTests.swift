@@ -126,6 +126,65 @@ struct CounterFeatureTests {
             $0.count = 101  // 100 → 101
         }
     }
+
+    // MARK: - タイマー開始のテスト
+    @Test("Timer button starts the timer")
+    func timerStart() async {
+        let store = TestStore(initialState: CounterFeature.State()) {
+            CounterFeature()
+        }
+
+        // タイマー開始: isTimerRunning が true になる
+        await store.send(.timerButtonTapped) {
+            $0.isTimerRunning = true
+        }
+
+        // Effect が timerTick を送信するのを待つ（1秒後）
+        // receive で Effect から送られるアクションを検証
+        await store.receive(\.timerTick, timeout: .seconds(2)) {
+            $0.count = 1
+        }
+
+        // タイマー停止してテストを終了
+        await store.send(.timerButtonTapped) {
+            $0.isTimerRunning = false
+        }
+    }
+
+    // MARK: - タイマー停止のテスト
+    @Test("Timer button stops the timer when running")
+    func timerStop() async {
+        // タイマーが動作中の状態から開始
+        let store = TestStore(initialState: CounterFeature.State(isTimerRunning: false)) {
+            CounterFeature()
+        }
+
+        // タイマー開始
+        await store.send(.timerButtonTapped) {
+            $0.isTimerRunning = true
+        }
+
+        // すぐにタイマー停止（Effect がキャンセルされる）
+        await store.send(.timerButtonTapped) {
+            $0.isTimerRunning = false
+        }
+
+        // Effect がキャンセルされたので、timerTick は送信されない
+        // テストが完了すれば成功（未処理の Effect があるとテストが失敗する）
+    }
+
+    // MARK: - timerTick アクションのテスト
+    @Test("Timer tick increments count")
+    func timerTick() async {
+        let store = TestStore(initialState: CounterFeature.State(count: 5)) {
+            CounterFeature()
+        }
+
+        // timerTick を直接送信してテスト
+        await store.send(.timerTick) {
+            $0.count = 6
+        }
+    }
 }
 
 // MARK: - TCA テストの重要なポイント
@@ -135,8 +194,8 @@ struct CounterFeatureTests {
     予期しない変化があるとテストが失敗する。
 
  2. 【副作用のテスト】
-    今回のカウンターは副作用がないが、API呼び出しなどの副作用も
-    TestStore でモック化してテスト可能。
+    Effect から送られるアクションは store.receive で検証する。
+    タイマーなどの長時間実行される Effect はテスト終了前にキャンセルする。
 
  3. 【UI非依存】
     View をインスタンス化せずにロジックだけをテストできる。
@@ -145,4 +204,9 @@ struct CounterFeatureTests {
  4. 【ドキュメントとしての価値】
     テストコードが「この Action を送ると State がこう変わる」という
     仕様書の役割も果たす。
+
+ 5. 【Effect のテスト】
+    - send: ユーザーが起こすアクション
+    - receive: Effect から送られるアクション
+    - Effect がキャンセルされない場合、テストが失敗する（未処理の Effect エラー）
  */
